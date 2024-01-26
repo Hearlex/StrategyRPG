@@ -4,8 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link href="dist/rpgui.css" rel="stylesheet" type="text/css" >
+    <link href="index.css" rel="stylesheet" type="text/css" >
+    <script src="dist/rpgui.js"></script>
 </head>
-<body>
-    
+<body id="body">
+    <div class="rpgui-content">
+         <div class="rpgui-container framed-golden rpgui-draggable">
+            <h1>Resources</h2>
+            <div id="out_res">
+
+            </div>
+         </div>
+         <div class="rpgui-container framed-golden rpgui-draggable">
+            <h1>Adding</h1>
+            <hr>
+            <p>Name:</p><input type="text" id="in_name"><br>
+            <p>Type: </p><select id="in_type"></select>
+            <p>Value: </p><input type="text" id="in_value">
+            <p>Minimum: </p><input type="text" id="in_min">
+            <p>Maximum: </p><input type="text" id="in_max">
+            <button class="rpgui-button" id="btn_add">Add</button>
+         </div>  
+    </div>
+    <script type="text/javascript" src="index.js"></script>
 </body>
 </html>
