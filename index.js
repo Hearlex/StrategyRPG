@@ -96,8 +96,6 @@ function isNum(str) {
     if (typeof str === 'string' || str instanceof String) {
         let i = 0;
 
-        if (str.charAt(i) === '-') i++;
-
         while(i < str.length && str.charCodeAt(i) >= 48 && str.charCodeAt(i) <= 57) i++;
 
         return i >= str.length;
@@ -110,7 +108,6 @@ function containerClicked(e) {
     var src = e.target;
 
     while (src.id === "") {
-        console.log(src.id);
         src = src.parentElement;
     }
 
@@ -129,35 +126,50 @@ function containerClicked(e) {
     }
 }
 
+function setupContainer(id) {
+  var container = document.createElement("div");
+  container.classList = "rpgui-container framed-golden rpgui-draggable";
+  container.setAttribute("data-rpguitype", "draggable");
+  container.draggable = false;
+  container.addEventListener("click", containerClicked, null);
+  container.id = "container_" + id;
+  return container;
+}
+
+function setupHeader(level, text) {
+  var header = document.createElement("h" + level);
+  header.innerHTML = text;
+  
+  return header;
+}
+
+function setupElem(type) {
+  return document.createElement(type);
+}
+
 function createContainer(id) {
     var data = dat.find(d => d.id == id);
 
     if (data != undefined) {
-        var container = document.createElement("div");
-        container.classList = "rpgui-container framed-golden rpgui-draggable";
-        container.setAttribute("data-rpguitype", "draggable");
-        container.draggable = false;
-        container.addEventListener('click', containerClicked,null);
-        container.id = "container_" + data.id;
+        var container = setupContainer(data.id);
         
-        var title = document.createElement("h1");
-        title.innerHTML = data.name + " | (" + data.min + " - " + data.max + ")";
+        var title = setupHeader(1, `${data.name} (${data.min} - ${data.max})`);
 
-        var clicker = document.createElement("div");
+        var clicker = setupElem("div");
         clicker.id = data.id;
 
         container.appendChild(title);
         container.appendChild(clicker);
 
         if (data.type === "num") {
-            var html = document.createElement("p");
+            var html = setupElem("p");
             html.innerHTML = data.value;
 
             clicker.appendChild(html);
             content.appendChild(container);
         }
         else if (data.type === "bar") {
-            var html = document.createElement("div");
+            var html = setupElem("div");
             clicker.appendChild(html);
 
             content.appendChild(container);
