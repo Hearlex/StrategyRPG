@@ -8,7 +8,7 @@ var btn_add = document.querySelector("#btn_add");
 var out_res = document.querySelector("#out_res");
 var modal = undefined;
 
-var body =  document.querySelector("#body");
+var content =  document.querySelector("#content");
 
 types = ["num", "bar"];
 dat = [];
@@ -86,52 +86,10 @@ function addClick(_) {
             max: max
         });
 
+        createContainer(id);
+
         id++;
     }
-
-    updateRes();
-}
-
-function updateRes() {
-    out_res.innerHTML = '';
-
-    dat.forEach(d => {
-        var container = document.createElement("div");
-
-        container.addEventListener('click', containerClicked,null);
-
-        if (d.type === "num") {
-            var label = document.createElement("p");
-            label.innerHTML = d.name + " (" + d.min + " - " + d.max + "):";
-            label.id="" + d.id;
-
-            var html = document.createElement("p");
-            html.innerHTML = d.value;
-            html.id = "" + d.id;
-
-            container.appendChild(label);
-            container.appendChild(html);
-
-            out_res.appendChild(container);
-        }
-        else if (d.type === "bar") {
-            var label = document.createElement("label");
-            label.innerHTML = d.name + " (" + d.min + " - " + d.max + "):";
-            container.appendChild(label);
-            label.id="" + d.id;
-
-            var html = document.createElement("div");
-            container.appendChild(html);
-            html.id = "" + d.id;
-
-            out_res.appendChild(container);
-
-            RPGUI.create(html, "progress");          
-            RPGUI.set_value(html,(d.value-d.min)/(d.max-d.min));         
-        }
-    });
-
-    out_res.innerHTML = html;
 }
 
 function isNum(str) {
@@ -165,9 +123,50 @@ function containerClicked(e) {
 
            if (isNum(value) && data.value + parseInt(value) <= data.max && data.value + parseInt(value) >= data.min) {
                 data.value += parseInt(value);
-                updateRes();
+                //updateRes();
            }
         }
+    }
+}
+
+function createContainer(id) {
+    var data = dat.find(d => d.id == id);
+
+    if (data != undefined) {
+        var container = document.createElement("div");
+        container.classList = "rpgui-container framed-golden rpgui-draggable";
+        container.setAttribute("data-rpguitype", "draggable");
+        container.draggable = false;
+        container.addEventListener('click', containerClicked,null);
+        container.id = "container_" + data.id;
+        
+        var title = document.createElement("h1");
+        title.innerHTML = data.name + " | (" + data.min + " - " + data.max + ")";
+
+        var clicker = document.createElement("div");
+        clicker.id = data.id;
+
+        container.appendChild(title);
+        container.appendChild(clicker);
+
+        if (data.type === "num") {
+            var html = document.createElement("p");
+            html.innerHTML = data.value;
+
+            clicker.appendChild(html);
+            content.appendChild(container);
+        }
+        else if (data.type === "bar") {
+            var html = document.createElement("div");
+            clicker.appendChild(html);
+
+            content.appendChild(container);
+
+            RPGUI.create(html, "progress");          
+            RPGUI.set_value(html,(data.value-data.min)/(data.max-data.min));         
+        }
+
+        RPGUI.create(container, "draggable");
     }
 }
 
