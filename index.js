@@ -5,6 +5,7 @@ var in_min = document.querySelector("#in_min");
 var in_max = document.querySelector("#in_max");
 
 var btn_add = document.querySelector("#btn_add");
+var color = document.querySelector("#color");
 var out_res = document.querySelector("#out_res");
 var modal = undefined;
 
@@ -17,10 +18,13 @@ id = 0;
 function init(_) {
     in_type.innerHTML = "";
     types.forEach(type => {
-        in_type.innerHTML += '<option value="' + type + '">' + type + "</option>";
+        in_type.innerHTML += '<option value="' + type + '">' + capitalize(type) + "</option>";
     });
 
     RPGUI.create(in_type, "dropdown");
+    RPGUI.create(color, "dropdown");
+    
+    color.disabled = true;
 
     btn_add.addEventListener("click",addClick,null);
 
@@ -32,16 +36,24 @@ function init(_) {
     in_type.addEventListener("change",autofill,null);
 }
 
+function capitalize(word) {
+  return word[0].toUpperCase() + word.substr(1);
+}
+
 function autofill(e) {
     var value = in_type.value;
 
     if (value === "bar") {
         in_min.value = "0";
         in_max.value = "100";
+        
+        color.disabled = false;
     }
     else {
         in_min.value = "";
         in_max.value = "";
+        
+        color.disabled = true;
     }
 }
 
@@ -72,11 +84,16 @@ function addClick(_) {
     }
 
     var type = in_type.value;
+    var clr = color.value;
     var val = parseInt(in_value.value);
     var min = parseInt(in_min.value);
     var max = parseInt(in_max.value);
 
     if (min <= val && max >= val && types.includes(type) && !datIncludes(name)) {
+        if (type === "bar") {
+          type = `${type}-${color.value}`;
+        }
+      
         dat.push({
             id: id,
             name: name,
@@ -151,6 +168,8 @@ function createContainer(id) {
     var data = dat.find(d => d.id == id);
 
     if (data != undefined) {
+        var type = data.type.split("-");
+      
         var container = setupContainer(data.id);
         
         var title = setupHeader(1, `${data.name} (${data.min} - ${data.max})`);
@@ -161,15 +180,29 @@ function createContainer(id) {
         container.appendChild(title);
         container.appendChild(clicker);
 
-        if (data.type === "num") {
+        if (type[0] === "num") {
             var html = setupElem("p");
             html.innerHTML = data.value;
 
             clicker.appendChild(html);
             content.appendChild(container);
         }
-        else if (data.type === "bar") {
+        else if (type[0] === "bar") {
             var html = setupElem("div");
+            var clr = type[1];
+            
+            console.log(clr);
+            
+            if (clr === "r") {
+              html.classList.add("red");
+            }
+            else if (clr === "b") {
+              html.classList.add("blue");
+            }
+            else if (clr === "g") {
+              html.classList.add("green");
+            }
+            
             clicker.appendChild(html);
 
             content.appendChild(container);
