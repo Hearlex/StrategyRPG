@@ -12,6 +12,7 @@ var modal = undefined;
 var content =  document.querySelector("#content");
 
 types = ["num", "bar"];
+clrs = { p: "purple", r: "red", b: "blue", g: "green" };
 dat = [];
 id = 0;
 
@@ -190,18 +191,8 @@ function createContainer(id) {
         else if (type[0] === "bar") {
             var html = setupElem("div");
             var clr = type[1];
-            
-            console.log(clr);
-            
-            if (clr === "r") {
-              html.classList.add("red");
-            }
-            else if (clr === "b") {
-              html.classList.add("blue");
-            }
-            else if (clr === "g") {
-              html.classList.add("green");
-            }
+
+            html.classList.add(clrs[clr]);
             
             clicker.appendChild(html);
 
