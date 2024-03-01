@@ -15,38 +15,42 @@
     </style>
 </head>
 <body>
-    <div id="content" class="rpgui-content">
-         <div class="rpgui-container framed-golden rpgui-draggable">
-            <h1>Adding</h1>
-            <hr>
-            <p>Name:</p><input type="text" id="in_name"><br>
-            <p>Type: </p><select id="in_type"></select>
-            <br>
-            <select id="color">
-              <option value="p">Purple</option>
-              <option value="r">Red</option>
-              <option value="b">Blue</option>
-              <option value="g">Green</option>
-            </select>
-            <p>Value: </p><input type="text" id="in_value">
-            <p>Minimum: </p><input type="text" id="in_min">
-            <p>Maximum: </p><input type="text" id="in_max">
-            <button class="rpgui-button" id="btn_add">Add</button>
-         </div>
-         
-         <div id="modal_container" class="rpgui-container framed-golden rpgui-draggable">
-          <h1 id="modal_title">Changing</h1>
-          <hr>
-          <input type="text" id="change_val"><br>
-          <table>
-            <tr>
-              <td><button class="rpgui-button" id="btn_plus">+</button></td>
-              <td><button class="rpgui-button" id="btn_set">SET</button></td>
-              <td><button class="rpgui-button" id="btn_minus">-</button></td>
-            </tr>
-          </table>
-       </div>  
+  <div id="content" class="rpgui-content">
+    <div class="rpgui-container framed-golden rpgui-draggable">
+      <h1>Adding</h1>
+      <hr>
+      <p>Name:</p><input type="text" id="in_name"><br>
+      <div id="typeDiv">
+        <p>Type: </p><select id="in_type"></select>
+        <br>
+        <div id="colorDiv">
+          <select id="color">
+            <option value="p">Purple</option>
+            <option value="r">Red</option>
+            <option value="b">Blue</option>
+            <option value="g">Green</option>
+          </select>
+        </div>  
+      </div>  
+      <p>Value: </p><input type="text" id="in_value">
+      <p>Minimum: </p><input type="text" id="in_min">
+      <p>Maximum: </p><input type="text" id="in_max">
+      <button class="rpgui-button" id="btn_add">Add</button>
     </div>
-    <script type="text/javascript" src="index.js"></script>
+      
+    <div id="modal_container" class="rpgui-container framed-golden rpgui-draggable">
+      <h1 id="modal_title">Changing</h1>
+      <hr>
+      <input type="text" id="change_val"><br>
+      <table>
+        <tr>
+          <td><button class="rpgui-button" id="btn_plus">+</button></td>
+          <td><button class="rpgui-button" id="btn_set">SET</button></td>
+          <td><button class="rpgui-button" id="btn_minus">-</button></td>
+        </tr>
+      </table>
+    </div>  
+  </div>
+  <script type="text/javascript" src="index.js"></script>
 </body>
 </html>

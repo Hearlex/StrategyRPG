@@ -1,21 +1,23 @@
-var in_name = document.querySelector("#in_name");
-var in_type = document.querySelector("#in_type");
-var in_value = document.querySelector("#in_value");
-var in_min = document.querySelector("#in_min");
-var in_max = document.querySelector("#in_max");
+const in_name = document.querySelector("#in_name");
+const in_type = document.querySelector("#in_type");
+const in_value = document.querySelector("#in_value");
+const in_min = document.querySelector("#in_min");
+const in_max = document.querySelector("#in_max");
 
-var btn_add = document.querySelector("#btn_add");
-var color = document.querySelector("#color");
-var out_res = document.querySelector("#out_res");
+const btn_add = document.querySelector("#btn_add");
+const color = document.querySelector("#color");
+const colorDiv = document.querySelector("#colorDiv");
+const typeDiv = document.querySelector("#typeDiv");
+const out_res = document.querySelector("#out_res");
 
-var modal = document.querySelector("#modal_container");
-var modal_title = document.querySelector("#modal_title");
-var change_val = document.querySelector("#change_val");
-var btn_plus = document.querySelector("#btn_plus");
-var btn_minus = document.querySelector("#btn_minus");
-var btn_set = document.querySelector("#btn_set");
+const modal = document.querySelector("#modal_container");
+const modal_title = document.querySelector("#modal_title");
+const change_val = document.querySelector("#change_val");
+const btn_plus = document.querySelector("#btn_plus");
+const btn_minus = document.querySelector("#btn_minus");
+const btn_set = document.querySelector("#btn_set");
 
-var content =  document.querySelector("#content");
+const content =  document.querySelector("#content");
 
 types = ["num", "bar"];
 clrs = { p: "purple", r: "red", b: "blue", g: "green" };
@@ -33,8 +35,6 @@ function init(_) {
 
     RPGUI.create(in_type, "dropdown");
     RPGUI.create(color, "dropdown");
-    
-    color.disabled = true;
 
     btn_add.addEventListener("click",addClick,null);
     btn_plus.addEventListener("click",plusChange, null);
@@ -50,26 +50,27 @@ function init(_) {
     in_type.addEventListener("change",autofill,null);
 
     modal.setAttribute("style","visibility: hidden !important;");
+    autofill();
 }
 
 function capitalize(word) {
   return word[0].toUpperCase() + word.substr(1);
 }
 
-function autofill(e) {
-    var value = in_type.value;
+function autofill(_) {
+    const {value} = in_type;
 
     if (value === "bar") {
         in_min.value = "0";
         in_max.value = "100";
-        
-        color.disabled = false;
+
+        typeDiv.appendChild(colorDiv);
     }
     else {
         in_min.value = "";
         in_max.value = "";
-        
-        color.disabled = true;
+
+        typeDiv.removeChild(colorDiv);
     }
 }
 
@@ -86,23 +87,25 @@ function no_text(e) {
 }
 
 function datIncludes(name) {
-    var i = 0;
-    while (i < dat.length && dat[i].name != name) i++;
+    let i = 0;
+    while (i < dat.length && dat[i].name != name) {
+        i++;
+    }
 
     return i < dat.length;
 }
 
 function addClick(_) {
-    var name = in_name.value;
+    let name = in_name.value;
 
     if (name === "") {
-        name = "" + id; 
+        name = "Resource " + id; 
     }
 
-    var type = in_type.value;
-    var val = parseInt(in_value.value);
-    var min = parseInt(in_min.value);
-    var max = parseInt(in_max.value);
+    let type = in_type.value;
+    const val = parseInt(in_value.value);
+    const min = parseInt(in_min.value);
+    const max = parseInt(in_max.value);
 
     if (min <= val && max >= val && types.includes(type) && !datIncludes(name)) {
         if (type === "bar") {
@@ -128,7 +131,9 @@ function isNum(str) {
     if (typeof str === 'string' || str instanceof String) {
         let i = 0;
 
-        while(i < str.length && str.charCodeAt(i) >= 48 && str.charCodeAt(i) <= 57) i++;
+        while(i < str.length && str.charCodeAt(i) >= 48 && str.charCodeAt(i) <= 57) {
+            i++;
+        }
 
         return i >= str.length;
     }
@@ -141,7 +146,7 @@ function containerClicked(id) {
     console.log(changing);
 
     if (!changing) {
-        var data = dat.find(d => d.id == id);
+        const data = dat.find(d => d.id == id);
         
         if (data != undefined) {
             changing = true;
@@ -152,7 +157,7 @@ function containerClicked(id) {
         }
     }
     else {
-        var data = dat.find(d => d.id == id);
+        const data = dat.find(d => d.id == id);
         
         if (data != undefined) {
             change_id = id;
@@ -164,8 +169,8 @@ function containerClicked(id) {
 
 function plusChange(_) {
     if (changing) {
-        var data = dat.find(d => d.id == change_id);
-        var next = data.value + parseInt(change_val.value);
+        const data = dat.find(d => d.id == change_id);
+        const next = data.value + parseInt(change_val.value);
 
         if (next >= data.min && next <= data.max) {
             data.value = next;
@@ -177,8 +182,8 @@ function plusChange(_) {
 
 function minusChange(_) {
     if (changing) {
-        var data = dat.find(d => d.id == change_id);
-        var next = data.value - parseInt(change_val.value);
+        const data = dat.find(d => d.id == change_id);
+        const next = data.value - parseInt(change_val.value);
 
         if (next >= data.min && next <= data.max) {
             data.value = next;
@@ -190,8 +195,8 @@ function minusChange(_) {
 
 function setChange(_) {
     if (changing) {
-        var data = dat.find(d => d.id == change_id);
-        var next = parseInt(change_val.value);
+        const data = dat.find(d => d.id == change_id);
+        const next = parseInt(change_val.value);
 
         if (next >= data.min && next <= data.max) {
             data.value = next;
@@ -208,10 +213,10 @@ function updateContainer(id) {
         modal.setAttribute("style","visibility: hidden !important;");
     }
     
-    var data = dat.find(d => d.id == id);
-    var val = document.querySelector(`#value_${id}`);
+    const data = dat.find(d => d.id == id);
+    const val = document.querySelector(`#value_${id}`);
 
-    var type = data.type.split("-")[0];
+    const type = data.type.split("-")[0];
 
     if (type === "num") {
         val.innerHTML = data.value;
@@ -221,19 +226,14 @@ function updateContainer(id) {
     }
 }
 
-
-
 function createContainer(id) {
-    var data = dat.find(d => d.id == id);
+    const data = dat.find(d => d.id == id);
 
     if (data != undefined) {
-        var type = data.type.split("-");
-      
-        var container = setupContainer(data.id);
-        
-        var title = setupHeader(1, `${data.name} (${data.min} - ${data.max})`);
-
-        var clicker = setupElem("div");
+        const type = data.type.split("-");      
+        const container = setupContainer(data.id);      
+        const title = setupHeader(1, `${data.name} (${data.min} - ${data.max})`);
+        const clicker = setupElem("div");
         clicker.id = "click_"+data.id;
         clicker.addEventListener("click", function() {
             containerClicked(data.id);
@@ -243,7 +243,7 @@ function createContainer(id) {
         container.appendChild(clicker);
 
         if (type[0] === "num") {
-            var html = setupElem("p");
+            const html = setupElem("p");
             html.id = "value_" + data.id;
             html.innerHTML = data.value;
 
@@ -251,9 +251,9 @@ function createContainer(id) {
             content.appendChild(container);
         }
         else if (type[0] === "bar") {
-            var html = setupElem("div");
+            const html = setupElem("div");
             html.id = "value_" + data.id;
-            var clr = type[1];
+            const clr = type[1];
 
             html.classList.add(clrs[clr]);
             
@@ -270,17 +270,15 @@ function createContainer(id) {
 }
 
 function setupContainer(id) {
-    var container = document.createElement("div");
+    const container = document.createElement("div");
     container.classList = "rpgui-container framed-golden rpgui-draggable";
-    container.setAttribute("data-rpguitype", "draggable");
-    container.draggable = false;
     container.addEventListener("click", containerClicked, null);
     container.id = "container_" + id;
     return container;
 }
 
 function setupHeader(level, text) {
-    var header = document.createElement("h" + level);
+    const header = document.createElement("h" + level);
     header.innerHTML = text;
 
     return header;
